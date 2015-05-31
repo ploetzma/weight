@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Under Weigh | Login </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="//www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+    <script src="login.js" type="text/javascript"></script>
+    <style type="text/css">
+        .bs-example {
+            margin: 20px;
+        }
+        /* Fix alignment issue of label on extra small devices in Bootstrap 3.2 */
+        
+        .form-horizontal .control-label {
+            padding-top: 7px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>s
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="www.ragecastle.org">Ragecastle</a>
+                <ul class="nav navbar-nav">
+                </ul>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+            </div>
+        </div>
+    </nav>
+    <div class="jumbotron">
+        <h1>Login</h1>
+    </div>
+    <div class="container-fluid">
+        <div class="bs-example">
+            <div class="form-inline" role="form">
+                <div class="form-group ">
+                    <label class="sr-only" for="login-email">Email address</label>
+                    <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+                </div>
+
+                <div class="form-group ">
+                    <label class="sr-only" for="login-password">Password</label>
+                    <input type="password" class="form-control" id="inputPassword" placeholder="Enter password">
+                </div>
+
+                <button class="btn btn-default" id="sign-in-submit" onclick="login()">Sign in</button>
+            </div>
+
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-xs-12">
+                <footer>
+                    <p>&copy; Copyright 2015 Matt Rocco</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
