@@ -14,7 +14,6 @@ function get_user_data()
 
 {
     {
-
         Parse.$ = jQuery;
 
         // Replace this line with the one on your Quickstart Guide Page
@@ -48,6 +47,7 @@ function get_user_data()
                     }
                 },
                 error: function (error) {
+                    window.location.href = "login.html";
                     alert("Error: " + error.code + " " + error.message);
                 }
             });
