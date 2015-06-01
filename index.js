@@ -1,5 +1,6 @@
 var userWeights = [0];
-var userScale = []
+var userScale = [];
+var userObjectID = "";
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -7,6 +8,45 @@ function sleep(milliseconds) {
         if ((new Date().getTime() - start) > milliseconds) {
             break;
         }
+    }
+}
+
+function logout()
+
+{
+    Parse.User.logOut();
+    alert("Successfully logged out");
+    window.location.href = "login.html";
+}
+
+function submit_new_weight()
+
+{
+    var date = new Date();
+    var day = date.getDay();
+    var day_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day];
+
+    var weight = document.getElementById("todayWeight").value;
+    if (isNaN(weight)) {
+        alert("That was not a number, try again.");
+    } else {
+        event.preventDefault();
+        var GameScore = Parse.Object.extend("Weight");
+        var query = new Parse.Query(GameScore);
+        query.get(userObjectID, {
+            success: function (gameScore) {
+                alert("Successfully retrieved object.");
+                gameScore.addUnique("weights", weight);
+                gameScore.addUnique("scale", day_of_week);
+                gameScore.save();
+                location.reload();
+                // The object was retrieved successfully.
+            },
+            error: function (object, error) {
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
+            }
+        });
     }
 }
 
@@ -37,13 +77,12 @@ function get_user_data()
             query.equalTo("user", currentUser.get("username"));
             query.find({
                 success: function (results) {
-                    // alert("Successfully retrieved " + results.length + " scores.");
                     // Do something with the returned Parse.Object values
                     for (var i = 0; i < 1; i++) {
                         var object = results[i];
                         userWeights = object.get('weights');
                         userScale = object.get('scale');
-                        // alert(userWeights);
+                        userObjectID = object.id;
                     }
                 },
                 error: function (error) {
@@ -51,14 +90,10 @@ function get_user_data()
                     alert("Error: " + error.code + " " + error.message);
                 }
             });
-
-
         } else {
-            alert("User is not logged in!");
-            // show the signup or login page
+            window.location.href = "login.html";
         }
     }
-
 }
 
 function display_bar_graph() {

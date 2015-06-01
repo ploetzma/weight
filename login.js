@@ -23,13 +23,12 @@ $(function () {
 function login() {
     Parse.User.logIn(document.getElementById("inputEmail").value, document.getElementById("inputPassword").value, {
         success: function (user) {
-            alert("success");
             window.location.href = "index.html";
             // Do stuff after successful login.
         },
         error: function (user, error) {
             // The login failed. Check error to see why.
-            alert("fail");
+            alert("Error: Your username and/or password is incorrect.");
 
         }
     });
