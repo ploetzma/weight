@@ -58,6 +58,7 @@ function sign_up() {
                     gameScore.set("weights", [starting_weight]);
                     gameScore.set("scale", [day_of_week]);
                     gameScore.set("user", email);
+                    gameScore.set("graph", "bar");
                     gameScore.save(null, {
                         success: function (gameScore) {
                             // Execute any logic that should take place after the object is saved.
