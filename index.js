@@ -24,7 +24,10 @@ function submit_new_weight()
 {
     var date = new Date();
     var day = date.getDay();
-    var day_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day];
+    var month = date.getMonth();
+    var year = date.getFullYear();
+
+    var day_of_week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"][day];
 
     var weight = document.getElementById("todayWeight").value;
     if (isNaN(weight)) {
@@ -35,9 +38,23 @@ function submit_new_weight()
         var query = new Parse.Query(GameScore);
         query.get(userObjectID, {
             success: function (gameScore) {
-                alert("Successfully retrieved object.");
-                gameScore.addUnique("weights", weight);
-                gameScore.addUnique("scale", day_of_week);
+
+                if (gameScore.get("day") === Number(day) && gameScore.get("month") === Number(month) && gameScore.get("year") === Number(year))
+
+                {
+                    var weights_array = gameScore.get("weights");
+                    weights_array[weights_array.length - 1] = weight;
+                    gameScore.set("weights", weights_array);
+                    
+                } else
+
+                {
+                    gameScore.add("weights", weight);
+                    gameScore.add("scale", day_of_week);
+                    gameScore.set("day", Number(day));
+                    gameScore.set("month", Number(month));
+                    gameScore.set("year", Number(year));
+                }
                 gameScore.save();
                 location.reload();
                 // The object was retrieved successfully.
