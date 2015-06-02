@@ -1,6 +1,7 @@
 var userWeights = [0];
 var userScale = [];
 var userObjectID = "";
+var userGraph = "";
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -100,6 +101,7 @@ function get_user_data()
                         userWeights = object.get('weights');
                         userScale = object.get('scale');
                         userObjectID = object.id;
+                        userGraph = object.get('graph');
                     }
                 },
                 error: function (error) {
@@ -111,6 +113,12 @@ function get_user_data()
             window.location.href = "login.html";
         }
     }
+}
+
+function display_graph(){
+    
+    display_bar_graph();
+    
 }
 
 function display_bar_graph() {
