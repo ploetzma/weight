@@ -46,7 +46,7 @@ function submit_new_weight()
                     var weights_array = gameScore.get("weights");
                     weights_array[weights_array.length - 1] = weight;
                     gameScore.set("weights", weights_array);
-                    
+
                 } else
 
                 {
@@ -115,10 +115,35 @@ function get_user_data()
     }
 }
 
-function display_graph(){
-    
-    display_bar_graph();
-    
+function display_graph() {
+    if (userGraph === "bar") {
+        display_bar_graph();
+    } else if (userGraph === "line") {
+        display_line_graph();
+    }
+}
+
+function change_graph(graph)
+
+{
+    event.preventDefault();
+    var GameScore = Parse.Object.extend("Weight");
+    var query = new Parse.Query(GameScore);
+    query.get(userObjectID, {
+        success: function (gameScore) {
+
+            gameScore.set("graph", graph);
+            gameScore.save();
+            location.reload();
+            // The object was retrieved successfully.
+        },
+        error: function (object, error) {
+            alert("object error")
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
+        }
+    });
+
 }
 
 function display_bar_graph() {
@@ -136,9 +161,9 @@ function display_bar_graph() {
                 highlightFill: "rgba(220,220,220,0.75)",
                 highlightStroke: "rgba(220,220,220,1)",
                 data: userWeights
-   }
-  ]
+   }]
     }
+
     window.onload = function () {
         var ctx = document.getElementById("canvas").getContext("2d");
         window.myBar = new Chart(ctx).Bar(barChartData, {
@@ -147,4 +172,35 @@ function display_bar_graph() {
 
         myBarChart.update();
     }
-}
+};
+
+function display_line_graph() {
+
+    var randomScalingFactor = function () {
+        return Math.round(Math.random() * 100)
+    };
+    var lineChartData = {
+        labels: userScale,
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: userWeights
+            }
+   ]
+
+    }
+
+    window.onload = function () {
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myLine = new Chart(ctx).Line(lineChartData, {
+            responsive: true
+        });
+    }
+
+};
