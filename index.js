@@ -122,8 +122,6 @@ function display_graph() {
     } else if (userGraph === "line") {
         display_line_graph();
     }
-    calculate_average();
-
 }
 
 function change_graph(graph)
@@ -179,8 +177,6 @@ function display_bar_graph() {
 
 function display_line_graph() {
 
-    calculate_average();
-
     var randomScalingFactor = function () {
         return Math.round(Math.random() * 100)
     };
@@ -217,6 +213,44 @@ function display_line_graph() {
 
 };
 
+// Change the scale of the graph.
+function change_scale() {
+    event.preventDefault();
+
+    var GameScore = Parse.Object.extend("Weight");
+    var query = new Parse.Query(GameScore);
+    var new_weights = [];
+
+    query.get(userObjectID, {
+        success: function (gameScore) {
+            if (gameScore.get('units') === "lbs") {
+                for (i = 0; i < userWeights.length; i++) {
+                    new_weights.push(Number(userWeights[i] / 2.2046).toFixed(2));
+                }
+                userWeightUnits = "kg";
+                gameScore.set("units", userWeightUnits);
+
+            } else {
+                for (i = 0; i < userWeights.length; i++) {
+                    new_weights.push(Number(userWeights[i] * 2.2046).toFixed(2));
+                }
+                userWeightUnits = "lbs";
+
+                gameScore.set("units", userWeightUnits);
+
+            }
+            gameScore.set("weights", new_weights);
+            gameScore.save();
+            location.reload();
+            // The object was retrieved successfully.
+        },
+        error: function (object, error) {
+            alert("object error")
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
+        }
+    });
+}
 
 function calculate_average() {
     sum = 0;
