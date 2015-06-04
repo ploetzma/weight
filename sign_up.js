@@ -27,6 +27,11 @@ function sign_up() {
     var date = new Date();
     var day = date.getDay();
     var day_of_week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day];
+    var date = new Date();
+    var month = date.getMonth();
+    var year = date.getFullYear();
+
+    var day_of_week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"][day];
 
     // Log the user out to prevent any session token mishaps.
     Parse.User.logOut();
@@ -53,12 +58,21 @@ function sign_up() {
             user.signUp(null, {
                 success: function (user) {
                     // Submit the form if successful.
+
                     var GameScore = Parse.Object.extend("Weight");
                     var gameScore = new GameScore();
                     gameScore.set("weights", [starting_weight]);
                     gameScore.set("scale", [day_of_week]);
                     gameScore.set("user", email);
+                    gameScore.set("day", Number(day));
+                    gameScore.set("month", Number(month));
+                    gameScore.set("year", Number(year));
                     gameScore.set("graph", "bar");
+                    gameScore.set("units", "kg");
+                    if (document.getElementById('pounds_button').checked) {
+                        gameScore.set("units", "lbs");
+                    }
+
                     gameScore.save(null, {
                         success: function (gameScore) {
                             // Execute any logic that should take place after the object is saved.
