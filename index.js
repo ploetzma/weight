@@ -2,6 +2,7 @@ var userWeights = [0];
 var userScale = [];
 var userObjectID = "";
 var userGraph = "";
+var userWeightUnits = "";
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -121,6 +122,8 @@ function display_graph() {
     } else if (userGraph === "line") {
         display_line_graph();
     }
+    calculate_average();
+
 }
 
 function change_graph(graph)
@@ -176,6 +179,8 @@ function display_bar_graph() {
 
 function display_line_graph() {
 
+    calculate_average();
+
     var randomScalingFactor = function () {
         return Math.round(Math.random() * 100)
     };
@@ -183,7 +188,15 @@ function display_line_graph() {
         labels: userScale,
         datasets: [
             {
-                label: "My First dataset",
+                fillColor: "rgba(151,187,205,0.2)",
+                strokeColor: "rgba(180,180,180,1)",
+                pointColor: "rgba(151,187,205,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: calculate_average()
+    },
+            {
                 fillColor: "rgba(220,220,220,0.2)",
                 strokeColor: "rgba(220,220,220,1)",
                 pointColor: "rgba(220,220,220,1)",
@@ -191,9 +204,8 @@ function display_line_graph() {
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
                 data: userWeights
-            }
+    }
    ]
-
     }
 
     window.onload = function () {
@@ -204,3 +216,20 @@ function display_line_graph() {
     }
 
 };
+
+
+function calculate_average() {
+    sum = 0;
+    length = userWeights.length;
+    for (var i = 0; i < length; i++) {
+        sum = sum + Number(userWeights[i]);
+    }
+    document.getElementById("average").innerHTML = 'your average weight ' + (sum / length) + ' ' + userWeightUnits;
+
+    var average_array = [];
+
+    for (var i = 0; i < length; i++) {
+        average_array.push(sum / length);
+    }
+    return (average_array);
+}

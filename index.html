@@ -60,23 +60,22 @@
                 <div style="width: 40%">
                     <canvas id="canvas" height="450" width="800"></canvas>
                 </div>
-                <script>
-                    display_graph();
-                </script>
-                <div class="form-group">
-                    <label for="inputPassword" class="control-label col-xs-2">Today's Weight</label>
-                    <div class="col-xs-5">
-                        <input type="number" class="form-control" id="todayWeight" placeholder="0">
+                <p id="average"><strong>words and shit</strong>
+                    <script>
+                        display_graph();
+                    </script>
+                    <div class="form-group">
+                        <label for="inputPassword" class="control-label col-xs-2">Today's Weight</label>
+                        <div class="col-xs-5">
+                            <input type="number" class="form-control" id="todayWeight" placeholder="0">
+                        </div>
+                        <div class="col-xs-5">
+                            <button type="submit" class="btn btn-primary btn-lg" onclick="submit_new_weight()" style="width:30%">Submit</button>
+                            <button type="submit" class="btn btn-primary btn-lg" onclick="change_graph('bar')" style="width:30%">Bar</button>
+                            <button type="submit" class="btn btn-primary btn-lg" onclick="change_graph('line')" style="width:30%">Line</button>
+                        </div>
+
                     </div>
-                    <div class="col-xs-5">
-                        <button type="submit" class="btn btn-primary btn-lg" onclick="submit_new_weight()" style="width:30%">Submit</button>
-                        <button type="submit" class="btn btn-primary btn-lg" onclick="change_graph('bar')" style="width:30%">Bar</button>
-                        <button type="submit" class="btn btn-primary btn-lg" onclick="change_graph('line')" style="width:30%">Line</button>
-
-
-                    </div>
-
-                </div>
             </form>
         </div>
         <hr>
