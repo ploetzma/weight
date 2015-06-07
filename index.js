@@ -258,7 +258,7 @@ function calculate_average() {
     for (var i = 0; i < length; i++) {
         sum = sum + Number(userWeights[i]);
     }
-    document.getElementById("average").innerHTML = 'your average weight ' + (sum / length) + ' ' + userWeightUnits;
+    document.getElementById("average").innerHTML = 'your average weight ' + (sum / length).toFixed(2) + ' ' + userWeightUnits;
 
     var average_array = [];
 
