@@ -1,8 +1,11 @@
+var userCustomWeights = [0];
 var userWeights = [0];
 var userScale = [];
 var userObjectID = "";
 var userGraph = "";
 var userWeightUnits = "";
+var custom = false;
+var kScale = 10;
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -103,6 +106,7 @@ function get_user_data()
                         userScale = object.get('scale');
                         userObjectID = object.id;
                         userGraph = object.get('graph');
+                        userWeightUnits = object.get('units');
                     }
                 },
                 error: function (error) {
@@ -119,14 +123,13 @@ function get_user_data()
 function display_graph() {
     if (userGraph === "bar") {
         display_bar_graph();
+        calculate_average();
     } else if (userGraph === "line") {
         display_line_graph();
     }
 }
 
-function change_graph(graph)
-
-{
+function change_graph(graph) {
     event.preventDefault();
     var GameScore = Parse.Object.extend("Weight");
     var query = new Parse.Query(GameScore);
@@ -144,7 +147,11 @@ function change_graph(graph)
                 // error is a Parse.Error with an error code and message.
         }
     });
+}
 
+function get_custom() {
+    alert(custom);
+    return custom;
 }
 
 function display_bar_graph() {
@@ -154,14 +161,14 @@ function display_bar_graph() {
     };
     //window.alert(data_array);
     var barChartData = {
-        labels: userScale,
+        labels: userScale.slice(userScale.length - kScale,userScale.length - 1),
         datasets: [
             {
                 fillColor: "rgba(220,220,220,0.5)",
                 strokeColor: "rgba(220,220,220,0.8)",
                 highlightFill: "rgba(220,220,220,0.75)",
                 highlightStroke: "rgba(220,220,220,1)",
-                data: userWeights
+                data: userWeights.slice(userScale.length - kScale,userScale.length - 1)
    }]
     }
 
@@ -181,16 +188,16 @@ function display_line_graph() {
         return Math.round(Math.random() * 100)
     };
     var lineChartData = {
-        labels: userScale,
+        labels: userScale.slice(userScale.length - kScale,userScale.length - 1),
         datasets: [
             {
-                fillColor: "rgba(151,187,205,0.2)",
-                strokeColor: "rgba(180,180,180,1)",
-                pointColor: "rgba(151,187,205,1)",
+                fillColor: "rgba(151,187,205,0.0)",
+                strokeColor: "rgba(180,180,180,0.5)",
+                pointColor: "rgba(151,187,205,0.5)",
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,1)",
-                data: calculate_average()
+                pointHighlightStroke: "rgba(151,187,205,0.5)",
+                data: calculate_average().slice(0, kScale)
     },
             {
                 fillColor: "rgba(220,220,220,0.2)",
@@ -199,7 +206,7 @@ function display_line_graph() {
                 pointStrokeColor: "#fff",
                 pointHighlightFill: "#fff",
                 pointHighlightStroke: "rgba(220,220,220,1)",
-                data: userWeights
+                data: userWeights.slice(userScale.length - kScale,userScale.length - 1)
     }
    ]
     }
@@ -214,7 +221,7 @@ function display_line_graph() {
 };
 
 // Change the scale of the graph.
-function change_scale() {
+function change_units() {
     event.preventDefault();
 
     var GameScore = Parse.Object.extend("Weight");
@@ -262,8 +269,36 @@ function calculate_average() {
 
     var average_array = [];
 
-    for (var i = 0; i < length; i++) {
-        average_array.push(sum / length);
+    for (var i = 0; i < kScale; i++) {
+        average_array.push((sum / kScale).toFixed(2));
     }
     return (average_array);
+}
+
+function custom_scale(number) {
+    date_array = [];
+    custom_weights = [];
+    custom = true;
+    for (var i = 0; i < number; i++) {
+        userCustomWeights[i] = userWeights[userWeights.length - i];
+    }
+
+    event.preventDefault();
+    var GameScore = Parse.Object.extend("Weight");
+    var query = new Parse.Query(GameScore);
+    query.get(userObjectID, {
+        success: function (gameScore) {
+            gameScore.set("custom_weights", userCustomWeights);
+            gameScore.save();
+            custom = true;
+            location.reload();
+            // The object was retrieved successfully.
+        },
+        error: function (object, error) {
+            alert("object error")
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
+        }
+    });
+
 }
