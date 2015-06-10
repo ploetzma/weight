@@ -123,10 +123,11 @@ function get_user_data()
 function display_graph() {
     if (userGraph === "bar") {
         display_bar_graph();
-        calculate_average();
     } else if (userGraph === "line") {
         display_line_graph();
     }
+    average = calculate_average(userWeights.length);
+    check_weekends(userWeights, userScale, average[0]);
 }
 
 function change_graph(graph) {
@@ -160,16 +161,34 @@ function display_bar_graph() {
         return Math.round(Math.random() * 100)
     };
     //window.alert(data_array);
-    var barChartData = {
-        labels: userScale.slice(userScale.length - kScale,userScale.length - 1),
-        datasets: [
-            {
-                fillColor: "rgba(220,220,220,0.5)",
-                strokeColor: "rgba(220,220,220,0.8)",
-                highlightFill: "rgba(220,220,220,0.75)",
-                highlightStroke: "rgba(220,220,220,1)",
-                data: userWeights.slice(userScale.length - kScale,userScale.length - 1)
+
+    if (userScale.length < kScale) {
+        
+        var barChartData = {
+            labels: userScale,
+            datasets: [
+                {
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: userWeights
    }]
+        }
+
+    } else {
+
+        var barChartData = {
+            labels: userScale.slice(userScale.length - kScale, userScale.length - 1),
+            datasets: [
+                {
+                    fillColor: "rgba(220,220,220,0.5)",
+                    strokeColor: "rgba(220,220,220,0.8)",
+                    highlightFill: "rgba(220,220,220,0.75)",
+                    highlightStroke: "rgba(220,220,220,1)",
+                    data: userWeights.slice(userScale.length - kScale, userScale.length - 1)
+   }]
+        }
     }
 
     window.onload = function () {
@@ -187,28 +206,60 @@ function display_line_graph() {
     var randomScalingFactor = function () {
         return Math.round(Math.random() * 100)
     };
-    var lineChartData = {
-        labels: userScale.slice(userScale.length - kScale,userScale.length - 1),
-        datasets: [
-            {
-                fillColor: "rgba(151,187,205,0.0)",
-                strokeColor: "rgba(180,180,180,0.5)",
-                pointColor: "rgba(151,187,205,0.5)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(151,187,205,0.5)",
-                data: calculate_average().slice(0, kScale)
+
+
+    if (userScale.length < kScale) {
+
+
+        var lineChartData = {
+            labels: userScale,
+            datasets: [
+                {
+                    fillColor: "rgba(151,187,205,0.0)",
+                    strokeColor: "rgba(180,180,180,0.5)",
+                    pointColor: "rgba(151,187,205,0.5)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,0.5)",
+                    data: calculate_average(userWeights.length)
     },
-            {
-                fillColor: "rgba(220,220,220,0.2)",
-                strokeColor: "rgba(220,220,220,1)",
-                pointColor: "rgba(220,220,220,1)",
-                pointStrokeColor: "#fff",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: userWeights.slice(userScale.length - kScale,userScale.length - 1)
+                {
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: userWeights
     }
    ]
+        }
+
+    } else {
+
+        var lineChartData = {
+            labels: userScale.slice(userScale.length - kScale, userScale.length - 1),
+            datasets: [
+                {
+                    fillColor: "rgba(151,187,205,0.0)",
+                    strokeColor: "rgba(180,180,180,0.5)",
+                    pointColor: "rgba(151,187,205,0.5)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,0.5)",
+                    data: calculate_average(userWeights.length).slice(0, kScale)
+    },
+                {
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: userWeights.slice(userScale.length - kScale, userScale.length - 1)
+    }
+   ]
+        }
     }
 
     window.onload = function () {
@@ -259,7 +310,7 @@ function change_units() {
     });
 }
 
-function calculate_average() {
+function calculate_average(scale) {
     sum = 0;
     length = userWeights.length;
     for (var i = 0; i < length; i++) {
@@ -270,7 +321,7 @@ function calculate_average() {
     var average_array = [];
 
     for (var i = 0; i < kScale; i++) {
-        average_array.push((sum / kScale).toFixed(2));
+        average_array.push((sum / scale).toFixed(2));
     }
     return (average_array);
 }
