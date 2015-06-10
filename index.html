@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Under Weigh | Home </title>
+    <title>Placeholder | Home </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -58,26 +58,38 @@
     <div class="container-fluid">
         <div class="bs-example">
             <form class="form-horizontal">
-                <div style="width: 40%">
-                    <canvas id="canvas" height="450" width="800"></canvas>
-                </div>
-                <p id="average"><strong>words and shit</strong>
-                    <script>
-                        display_graph();
-                    </script>
-                    <div class="form-group">
-                        <label for="inputPassword" class="control-label col-xs-2">Today's Weight</label>
-                        <div class="col-xs-5">
-                            <input type="number" class="form-control" id="todayWeight" placeholder="0">
-                        </div>
-                        <div class="col-xs-5">
-                            <button type="submit" class="btn btn-primary btn-lg" onclick="submit_new_weight()" style="width:30%">Submit</button>
-                            <button type="submit" class="btn btn-primary btn-lg" onclick="change_graph('bar')" style="width:30%">Bar</button>
-                            <button type="submit" class="btn btn-primary btn-lg" onclick="change_graph('line')" style="width:30%">Line</button>
-                            <!-- <button type="submit" class="btn btn-primary btn-lg" onclick="change_units()" style="width:30%">Change Units</button> -->
-                            <!-- <button type="submit" class="btn btn-primary btn-lg" onclick="custom_scale(5)" style="width:30%">Change Scale</button> -->
-                        </div>
+                <div class="col-xs-5">
+                    <div style="width: 100%">
+                        <canvas id="canvas" height="450" width="800"></canvas>
                     </div>
+                </div>
+                <h2 id="average" align="right"><strong>words</strong></h2>
+                <script>
+                    display_graph();
+                </script>
+                <div class="form-group">
+                    <label for="inputPassword" class="control-label col-xs-2">Today's Weight</label>
+                    <div class="col-xs-5">
+                        <input type="number" class="form-control" id="todayWeight" placeholder="0">
+                    </div>
+                    <div class="col-xs-5">
+                        <style type="text/css">
+                            .bs-example {
+                                margin: 20px;
+                            }
+                            /* Fix alignment issue of label on extra small devices in Bootstrap 3.2 */
+                            
+                            .form-horizontal .control-label {
+                                padding-top: 200px;
+                            }
+                        </style>
+                        <button type="submit" class="btn btn-primary btn-lg" onclick="submit_new_weight()" style="width:30%">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-lg" onclick="change_graph('bar')" style="width:30%">Bar</button>
+                        <button type="submit" class="btn btn-primary btn-lg" onclick="change_graph('line')" style="width:30%">Line</button>
+                        <!-- <button type="submit" class="btn btn-primary btn-lg" onclick="change_units()" style="width:30%">Change Units</button> -->
+                        <!-- <button type="submit" class="btn btn-primary btn-lg" onclick="custom_scale(5)" style="width:30%">Change Scale</button> -->
+                    </div>
+                </div>
             </form>
         </div>
         <hr>

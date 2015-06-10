@@ -5,7 +5,7 @@ var userObjectID = "";
 var userGraph = "";
 var userWeightUnits = "";
 var custom = false;
-var kScale = 10;
+var kScale = 11;
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -29,14 +29,15 @@ function submit_new_weight()
 {
     var date = new Date();
     var day = date.getDay();
-    var month = date.getMonth();
-    var year = date.getFullYear();
-
-    var day_of_week = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"][day];
-
+    var month = String(date.getMonth() + 1);
+    var year = String(date.getFullYear());
+    var day_of_week = String(["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"][day]);
+    
+var full_day = month.concat("/",day,"/",year);
+    
     var weight = document.getElementById("todayWeight").value;
-    if (isNaN(weight)) {
-        alert("That was not a number, try again.");
+    if (isNaN(weight) || weight < 0) {
+        alert("That was not a valid weight, try again!");
     } else {
         event.preventDefault();
         var GameScore = Parse.Object.extend("Weight");
@@ -55,7 +56,7 @@ function submit_new_weight()
 
                 {
                     gameScore.add("weights", weight);
-                    gameScore.add("scale", day_of_week);
+                    gameScore.add("scale", full_day);
                     gameScore.set("day", Number(day));
                     gameScore.set("month", Number(month));
                     gameScore.set("year", Number(year));
@@ -163,7 +164,7 @@ function display_bar_graph() {
     //window.alert(data_array);
 
     if (userScale.length < kScale) {
-        
+
         var barChartData = {
             labels: userScale,
             datasets: [
@@ -179,14 +180,14 @@ function display_bar_graph() {
     } else {
 
         var barChartData = {
-            labels: userScale.slice(userScale.length - kScale, userScale.length - 1),
+            labels: userScale.slice(userScale.length - kScale, userScale.length),
             datasets: [
                 {
                     fillColor: "rgba(220,220,220,0.5)",
                     strokeColor: "rgba(220,220,220,0.8)",
                     highlightFill: "rgba(220,220,220,0.75)",
                     highlightStroke: "rgba(220,220,220,1)",
-                    data: userWeights.slice(userScale.length - kScale, userScale.length - 1)
+                    data: userWeights.slice(userScale.length - kScale, userScale.length)
    }]
         }
     }
@@ -238,7 +239,7 @@ function display_line_graph() {
     } else {
 
         var lineChartData = {
-            labels: userScale.slice(userScale.length - kScale, userScale.length - 1),
+            labels: userScale.slice(userScale.length - kScale, userScale.length),
             datasets: [
                 {
                     fillColor: "rgba(151,187,205,0.0)",
@@ -256,7 +257,7 @@ function display_line_graph() {
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: userWeights.slice(userScale.length - kScale, userScale.length - 1)
+                    data: userWeights.slice(userScale.length - kScale, userScale.length)
     }
    ]
         }
@@ -316,7 +317,7 @@ function calculate_average(scale) {
     for (var i = 0; i < length; i++) {
         sum = sum + Number(userWeights[i]);
     }
-    document.getElementById("average").innerHTML = 'your average weight ' + (sum / length).toFixed(2) + ' ' + userWeightUnits;
+    document.getElementById("average").innerHTML = 'Average - ' + (sum / length).toFixed(2) + ' ' + userWeightUnits;
 
     var average_array = [];
 
@@ -327,9 +328,8 @@ function calculate_average(scale) {
 }
 
 function custom_scale(number) {
-    date_array = [];
-    custom_weights = [];
-    custom = true;
+    var date_array, custom_weights = [];
+    var custom = true;
     for (var i = 0; i < number; i++) {
         userCustomWeights[i] = userWeights[userWeights.length - i];
     }
